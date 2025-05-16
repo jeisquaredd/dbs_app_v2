@@ -102,7 +102,47 @@ if (isset($_POST['register'])) {
   };
 
   // Real-time username validation using AJAX
-  
+  const checkUsernameAvailability = (usernameField) => {
+    usernameField.addEventListener('input', () => {
+      const username = usernameField.value.trim();
+
+      if (username === '') {
+        usernameField.classList.remove('is-valid');
+        usernameField.classList.add('is-invalid');
+        usernameField.nextElementSibling.textContent = 'Username is required.';
+        registerButton.disabled = true; // Disable the button
+      return;
+      }
+
+      // Send AJAX request to check username availability
+      fetch('ajax/check_username.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `username=${encodeURIComponent(username)}`,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.exists) {
+            usernameField.classList.remove('is-valid');
+            usernameField.classList.add('is-invalid');
+            usernameField.nextElementSibling.textContent = 'Username is already taken.';
+            registerButton.disabled = true; // Disable the button
+          } else {
+            usernameField.classList.remove('is-invalid');
+            usernameField.classList.add('is-valid');
+            usernameField.nextElementSibling.textContent = '';
+            registerButton.disabled = false; // Enable the button
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          registerButton.disabled = true; // Disable the button in case of an error
+        });
+    });
+  };
+
   // Get form fields
   const firstName = document.getElementById('first_name');
   const lastName = document.getElementById('last_name');
@@ -112,9 +152,8 @@ if (isset($_POST['register'])) {
   // Attach real-time validation to each field
   validateField(firstName, isNotEmpty);
   validateField(lastName, isNotEmpty);
-  validateField(username, isNotEmpty);
   validateField(password, isPasswordValid);
-
+  checkUsernameAvailability(username);
 
   // Form submission validation
   document.getElementById('registrationForm').addEventListener('submit', function (e) {
