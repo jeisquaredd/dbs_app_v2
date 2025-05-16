@@ -1,11 +1,15 @@
+<?php
+    require_once('classes/database.php');
+    $con = new database();
+
+    $data = $con->opencon();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Student & Course CRUD (PHP PDO)</title>
   <link rel="stylesheet" href="./bootstrap-5.3.3-dist/css/bootstrap.css">
-  <!-- Sweetalert CSS -->
-  <link rel="stylesheet" href="./package/dist/sweetalert2.css">
 </head>
 <body class="bg-light">
   <div class="container py-5">
@@ -48,7 +52,7 @@
       <tbody>
         <tr>
           <td>1</td>
-          <td>Bachelor of Science in Information Technology</td>
+          <td>BS Information Technology</td>
           <td>
             <button class="btn btn-sm btn-warning">Edit</button>
             <button class="btn btn-sm btn-danger">Delete</button>
@@ -72,7 +76,7 @@
         <tr>
           <td>1</td>
           <td>Juan Dela Cruz</td>
-          <td>Bachelor of Science in Information Technology</td>
+          <td>BS Information Technology</td>
           <td>
             <button class="btn btn-sm btn-warning">Edit</button>
             <button class="btn btn-sm btn-danger">Delete</button>
@@ -115,7 +119,7 @@
           <input type="text" name="course_name" class="form-control mb-2" placeholder="Course Name" required>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success">Add Course</button>
+          <button type="submit" name="add_course" class="btn btn-success">Add Course</button>
         </div>
       </form>
     </div>
@@ -150,6 +154,5 @@
   </div>
 
   <script src="./bootstrap-5.3.3-dist/js/bootstrap.js"></script>
-  <script src="./package/dist/sweetalert2.js"></script>
 </body>
 </html>
