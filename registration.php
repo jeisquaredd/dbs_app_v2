@@ -46,7 +46,7 @@ if (isset($_POST['register'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Registration</title>
   <link rel="stylesheet" href="./bootstrap-5.3.3-dist/css/bootstrap.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="./package/dist/sweetalert2.css">
 </head>
 <body class="bg-light">
   <div class="container py-5">
@@ -76,23 +76,11 @@ if (isset($_POST['register'])) {
 
     </form>
   </div>
-  <?php echo $sweetAlertConfig; ?>
+  
   <script src="./bootstrap-5.3.3-dist/js/bootstrap.js"></script>
- 
-
-  <?php if (isset($_SESSION['error'])): ?>
+  <script src="./package/dist/sweetalert2.js"></script>
+  <?php echo $sweetAlertConfig; ?>
   <script>
-    Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: '<?php echo addslashes($_SESSION['error']); ?>',
-      confirmButtonText: 'OK'
-    });
-  </script>
-  <?php unset($_SESSION['error']); ?>
-<?php endif; ?>
-
-<script>
   // Function to validate individual fields
   function validateField(field, validationFn) {
     field.addEventListener('input', () => {
@@ -114,47 +102,7 @@ if (isset($_POST['register'])) {
   };
 
   // Real-time username validation using AJAX
-
-    usernameField.addEventListener('input', () => {
-      const username = usernameField.value.trim();
-
-      if (username === '') {
-        usernameField.classList.remove('is-valid');
-        usernameField.classList.add('is-invalid');
-        usernameField.nextElementSibling.textContent = 'Username is required.';
-        registerButton.disabled = true; // Disable the button
-      return;
-      }
-
-      // Send AJAX request to check username availability
-      fetch('ajax/check_username.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `username=${encodeURIComponent(username)}`,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.exists) {
-            usernameField.classList.remove('is-valid');
-            usernameField.classList.add('is-invalid');
-            usernameField.nextElementSibling.textContent = 'Username is already taken.';
-            registerButton.disabled = true; // Disable the button
-          } else {
-            usernameField.classList.remove('is-invalid');
-            usernameField.classList.add('is-valid');
-            usernameField.nextElementSibling.textContent = '';
-            registerButton.disabled = false; // Enable the button
-          }
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-          registerButton.disabled = true; // Disable the button in case of an error
-        });
-    });
-  };
-
+  
   // Get form fields
   const firstName = document.getElementById('first_name');
   const lastName = document.getElementById('last_name');
@@ -188,10 +136,7 @@ if (isset($_POST['register'])) {
     }
   });
 </script>
+
+
 </body>
 </html>
-
-<!-- if (isset($_POST['register'])) {
-     echo "Form submitted!";
-    exit;
- } -->
