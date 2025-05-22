@@ -5,7 +5,6 @@ $sweetAlertConfig = "";
 $con = new database();
 
 if (isset($_POST['login'])) {
-  echo 'form submitted';
     $username = $_POST['username'];
     $password = $_POST['password'];
 
@@ -15,18 +14,19 @@ if (isset($_POST['login'])) {
         $_SESSION['admin_ID'] = $user['admin_id'];
         $_SESSION['admin_FN'] = $user['admin_FN'];
 
-        echo "<script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Login Successful',
-                text: 'Welcome, " . htmlspecialchars($user['admin_FN']) . "!',
-                confirmButtonText: 'Continue'
-            }).then(() => {
-                window.location.href = 'index.php';
-            });
+        $sweetAlertConfig =  "<script>
+        Swal.fire({
+        icon: 'success',
+        title: 'Login Successful',
+        text: 'Welcome, " . addslashes(htmlspecialchars($user['admin_FN'])) . "!',
+        confirmButtonText: 'Continue'
+        }).then(() => {
+        window.location.href = 'index.php';
+        });
         </script>";
+
     } else {
-        echo "<script>
+      $sweetAlertConfig = "<script>
             Swal.fire({
                 icon: 'error',
                 title: 'Login Failed',
@@ -36,7 +36,6 @@ if (isset($_POST['login'])) {
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -59,7 +58,13 @@ if (isset($_POST['login'])) {
         <label for="password" class="form-label">Password</label>
         <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
       </div>
+
       <button type="submit" name="login" class="btn btn-primary w-100">Login</button>
+      
+      <div class="my-3 text-end">
+        <span>Don't have an account?</span>
+        <a href="registration.php" class="btn btn-link p-0 align-baseline">Register Now</a>
+      </div>
     </form>
     <?php echo $sweetAlertConfig; ?>
   </div>
